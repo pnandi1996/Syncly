@@ -6,12 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct SynclyApp: App {
+    private let persistenceController: PersistenceController
+
+    init() {
+        let persistenceController = PersistenceController()
+
+        self.persistenceController = persistenceController
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+                repository: SwiftDataTaskRepository(
+                    modelContext: persistenceController.container.mainContext
+                )
+            )
         }
+        .modelContainer(persistenceController.container)
     }
 }
